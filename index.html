@@ -142,7 +142,7 @@
         </button>
 
         <!-- 초보자용 API 연동 가이드 -->
-        <button id="menuApiGuideBtn" type="button" class="w-full text-left p-3.5 rounded-xl bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200/70 dark:border-amber-800/50 hover:bg-amber-100/70 transition flex items-center gap-3.5 mt-2">
+        <button id="menuApiGuideBtn" type="button" class="hidden w-full text-left p-3.5 rounded-xl bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200/70 dark:border-amber-800/50 hover:bg-amber-100/70 transition flex items-center gap-3.5 mt-2">
           <span class="text-2xl">🛠️</span>
           <div>
             <div class="font-bold text-sm text-amber-900 dark:text-amber-200">초보자용 API 연동 가이드</div>
@@ -151,7 +151,7 @@
         </button>
 
         <!-- 나만 볼 수 있는 관리자 페이지 (PIN 잠금) -->
-        <button id="menuAdminBtn" type="button" class="w-full text-left p-3.5 rounded-xl bg-zinc-900 dark:bg-zinc-800 text-white hover:bg-zinc-800 transition flex items-center justify-between gap-3 mt-2 shadow-sm">
+        <button id="menuAdminBtn" type="button" class="hidden w-full text-left p-3.5 rounded-xl bg-zinc-900 dark:bg-zinc-800 text-white hover:bg-zinc-800 transition flex items-center justify-between gap-3 mt-2 shadow-sm">
           <div class="flex items-center gap-3">
             <span class="text-xl">🔒</span>
             <div>
@@ -196,10 +196,10 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <button id="headerApiGuideBtn" type="button" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-100/80 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 hover:bg-amber-200/70 transition">
+        <button id="headerApiGuideBtn" type="button" class="hidden items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-100/80 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 hover:bg-amber-200/70 transition">
           🛠️ API 연동 팁
         </button>
-        <button id="headerAdminBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-zinc-900 dark:bg-zinc-700 text-white hover:bg-mono-pink transition shadow-sm" title="관리자 전용 페이지 (비밀번호 필요)">
+        <button id="headerAdminBtn" type="button" class="hidden items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-zinc-900 dark:bg-zinc-700 text-white hover:bg-mono-pink transition shadow-sm" title="관리자 전용 페이지 (비밀번호 필요)">
           <span>🔒 관리자</span>
           <span id="headerLiveDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
         </button>
@@ -1112,15 +1112,63 @@
         </div>
       </div>
 
-      <!-- 초보자용 실제 서버 트래픽 연동 안내 박스 -->
-      <div class="p-5 rounded-3xl bg-amber-50/90 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 space-y-2 text-xs text-amber-900 dark:text-amber-200">
-        <div class="font-extrabold text-sm flex items-center gap-1.5">
-          <span>💡 실제 런칭 시 다른 사람들의 접속·가입 데이터를 모으는 0원 꿀팁</span>
+      <!-- 관리자 전용 백엔드 계정 & API 연동 설정 콘솔 (일반 유저에게는 100% 숨김 처리됨) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- 좌측: 관리자 계정(ID/PW) 및 백엔드 DB 키 설정 -->
+        <div class="lg:col-span-6 p-6 rounded-3xl bg-white dark:bg-zinc-800 border-2 border-zinc-900 dark:border-zinc-600 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="px-2.5 py-0.5 rounded-full bg-zinc-900 text-white text-[10px] font-extrabold">BACKEND CONFIG</span>
+              <h3 class="text-base sm:text-lg font-extrabold text-zinc-900 dark:text-white mt-1">🔐 나만 보는 관리자 계정 & 백엔드 설정</h3>
+            </div>
+            <button id="adminOpenApiModalDirectBtn" type="button" class="px-3 py-1.5 rounded-xl bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 text-xs font-extrabold hover:bg-amber-200 transition">
+              🛠️ 상세 가이드 모달 열기
+            </button>
+          </div>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400">
+            일반 방문자에게는 상단 헤더와 메뉴에서 <strong>[관리자]</strong> 및 <strong>[API 연동 팁]</strong> 버튼이 완전히 숨겨져 있습니다. 오직 아래 지정하신 <strong>관리자 아이디·비밀번호</strong>로 로그인했을 때만 이 콘솔이 열립니다.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <div>
+              <label for="adminConfigIdInput" class="block text-xs font-bold text-zinc-600 dark:text-zinc-300 mb-1">관리자 전용 아이디 (ID)</label>
+              <input id="adminConfigIdInput" type="text" value="admin" class="w-full px-3.5 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-xs font-bold" />
+            </div>
+            <div>
+              <label for="adminConfigPwInput" class="block text-xs font-bold text-zinc-600 dark:text-zinc-300 mb-1">관리자 비밀번호 (PW)</label>
+              <input id="adminConfigPwInput" type="text" value="1234" class="w-full px-3.5 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-xs font-bold" />
+            </div>
+          </div>
+          <div class="space-y-2 pt-1">
+            <label for="adminConfigWebhookInput" class="block text-xs font-bold text-zinc-600 dark:text-zinc-300">실시간 DB / Supabase REST URL (선택 연동)</label>
+            <input id="adminConfigWebhookInput" type="text" placeholder="예: https://xyzcompany.supabase.co/rest/v1/visitor_logs" class="w-full px-3.5 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-xs font-mono" />
+          </div>
+          <button id="saveAdminBackendConfigBtn" type="button" class="w-full py-3 rounded-2xl bg-mono-pink hover:bg-mono-pinkHover text-white font-extrabold text-xs sm:text-sm transition shadow-sm">
+            💾 관리자 아이디/비밀번호 및 백엔드 설정 저장
+          </button>
         </div>
-        <p class="leading-relaxed text-amber-800 dark:text-amber-300">
-          1. <strong>Vercel 기본 방문자 통계 켜기 (코딩 0줄):</strong> 배포하신 Vercel 대시보드(vercel.com) → <code>monodate</code> 프로젝트 클릭 → 상단 <strong>[Analytics]</strong> 탭 클릭 → <strong>[Enable]</strong> 버튼만 누르면 일 방문자 수, 국가/기기별 접속 통계가 무료로 자동 집계됩니다.<br />
-          2. <strong>현재 내장된 관리자 페이지:</strong> 지금 이 화면은 내 브라우저의 실제 행동(코스 검색·생성·저장·로그인)을 실시간으로 감지해 기록하며, 무료 DB(Supabase 또는 Firebase) 주소만 연결하면 전 세계 모든 접속자의 로그가 이 표에 그대로 쌓이게 됩니다.
-        </p>
+
+        <!-- 우측: 운영자 전용 API & 네이버 지도 & Vercel 백엔드 연동 핵심 팁 -->
+        <div class="lg:col-span-6 p-6 rounded-3xl bg-amber-50/90 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 space-y-3 text-xs text-amber-900 dark:text-amber-200">
+          <div class="font-extrabold text-base flex items-center gap-1.5">
+            <span>🛠️ 운영자 전용: API 연동 & 실서버 백엔드 3단계 팁</span>
+          </div>
+          <div class="space-y-2.5 leading-relaxed text-amber-800 dark:text-amber-300">
+            <div class="p-3 rounded-2xl bg-white/80 dark:bg-zinc-900/80 border border-amber-200/60">
+              <strong>1. 네이버 지도 '검색 결과 없음' 방지 (적용 완료):</strong><br />
+              장소명에 괄호<code>(점심 식사)</code>나 슬래시<code>(강남/압구정)</code>가 섞이면 네이버 지도가 인식하지 못합니다. 현재 버전은 <strong>순수 공식 상호명 필터</strong>와 <strong>도로명 주소 직결 버튼(📍 주소 지도)</strong>을 이중 탑재해 100% 정확히 열립니다.
+            </div>
+            <div class="p-3 rounded-2xl bg-white/80 dark:bg-zinc-900/80 border border-amber-200/60">
+              <strong>2. 나만 볼 수 있는 관리자 접속법 3가지:</strong><br />
+              ① 상단 <strong>[로그인]</strong> 클릭 → 아이디에 <code>admin</code>, 비번 <code>1234</code> 입력<br />
+              ② 키보드 단축키 <strong><code>Ctrl + Shift + A</code></strong> 입력<br />
+              ③ 주소창 끝에 <strong><code>#admin</code></strong> 입력 (또는 하단 카피라이트의 <code>Admin</code> 클릭)
+            </div>
+            <div class="p-3 rounded-2xl bg-white/80 dark:bg-zinc-900/80 border border-amber-200/60">
+              <strong>3. Vercel 무료 실방문자 통계 & 무료 DB 붙이기:</strong><br />
+              Vercel 대시보드 → <code>monodate</code> → <strong>[Analytics] → [Enable]</strong> 클릭 시 코딩 0줄로 전 세계 실방문자(UV)가 집계됩니다.
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1205,7 +1253,7 @@
             어려운 지도 API 키를 신청할 필요 없이, 장소 이름만 있으면 아래 주소 규칙(URL 딥링크)만으로 실제 네이버 지도 검색 결과와 영업시간·길찾기 화면으로 바로 이동합니다. 지금 이 앱의 모든 <strong>[N 네이버 지도]</strong> 버튼에 이미 적용되어 있습니다!
           </p>
           <div class="p-2.5 rounded-xl bg-white dark:bg-zinc-900 font-mono text-xs text-zinc-800 dark:text-zinc-200 border border-emerald-200/60">
-            https://map.naver.com/p/search/성수동+오우드성수
+            https://map.naver.com/p/search/오우드성수
           </div>
         </div>
 
@@ -1232,18 +1280,21 @@
     </div>
   </div>
 
-  <!-- ==================== 모달 4: 간편 로그인 모달 ==================== -->
+  <!-- ==================== 모달 4: 통합 로그인 & 관리자 아이디 인증 모달 ==================== -->
   <div id="loginModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
-    <div class="bg-white dark:bg-zinc-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-pink-100 dark:border-zinc-800 space-y-5 text-center">
-      <div class="flex justify-end">
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-pink-100 dark:border-zinc-800 space-y-4 text-center">
+      <div class="flex justify-between items-center">
+        <span class="text-[11px] font-bold text-zinc-400">MEMBER & OWNER LOGIN</span>
         <button id="closeLoginModalBtn" type="button" class="w-8 h-8 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 font-bold">✕</button>
       </div>
-      <div class="space-y-1.5">
+      <div class="space-y-1">
         <span class="text-2xl font-black text-zinc-900 dark:text-white">MonoDate<span class="text-mono-pink">.</span></span>
-        <h3 class="text-base font-extrabold text-zinc-800 dark:text-zinc-100">3초 만에 내 데이트 보관함 동기화</h3>
-        <p class="text-xs text-zinc-500 dark:text-zinc-400">코스 생성은 비로그인으로 무료! 저장한 코스를 연인과 함께 관리할 때만 가볍게 로그인하세요.</p>
+        <h3 class="text-base font-extrabold text-zinc-800 dark:text-zinc-100">내 데이트 보관함 & 계정 로그인</h3>
+        <p class="text-xs text-zinc-500 dark:text-zinc-400">일반 회원은 간편 로그인으로, 사이트 운영자(Owner)는 지정된 관리자 아이디로 로그인하세요.</p>
       </div>
-      <div class="space-y-2.5 pt-2">
+
+      <!-- 일반 유저 소셜 간편 로그인 -->
+      <div class="space-y-2 pt-1">
         <button id="kakaoLoginSimBtn" type="button" class="w-full py-3 rounded-2xl bg-[#FEE500] hover:bg-[#FDD800] text-zinc-900 font-extrabold text-xs sm:text-sm transition">
           💬 카카오로 1초 만에 시작하기
         </button>
@@ -1251,6 +1302,37 @@
           N 네이버로 시작하기
         </button>
       </div>
+
+      <div class="relative flex py-1 items-center">
+        <div class="flex-grow border-t border-zinc-200 dark:border-zinc-700"></div>
+        <span class="flex-shrink mx-3 text-[11px] font-bold text-zinc-400">아이디 로그인 (운영자 전용 백엔드 접속)</span>
+        <div class="flex-grow border-t border-zinc-200 dark:border-zinc-700"></div>
+      </div>
+
+      <!-- 아이디 / 비밀번호 로그인 폼 (관리자 ID 입력 시에만 관리자 페이지 & API 가이드 활성화) -->
+      <form id="idLoginForm" class="space-y-2.5 text-left">
+        <div>
+          <label for="loginIdInput" class="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">아이디 (관리자 기본 ID: <code id="loginAdminIdHint" class="text-mono-pink font-extrabold">admin</code>)</label>
+          <input
+            id="loginIdInput"
+            type="text"
+            placeholder="아이디 입력 (운영자: admin)"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs sm:text-sm font-bold text-zinc-900 dark:text-white focus:outline-none focus:border-mono-pink"
+          />
+        </div>
+        <div>
+          <label for="loginPwInput" class="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">비밀번호 (초기 PW: <code id="loginAdminPwHint" class="text-mono-pink font-extrabold">1234</code>)</label>
+          <input
+            id="loginPwInput"
+            type="password"
+            placeholder="비밀번호 입력"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs sm:text-sm font-bold text-zinc-900 dark:text-white focus:outline-none focus:border-mono-pink"
+          />
+        </div>
+        <button type="submit" class="w-full py-3 rounded-2xl bg-zinc-900 dark:bg-mono-pink hover:bg-mono-pinkHover text-white font-extrabold text-xs sm:text-sm transition shadow-sm">
+          🔐 아이디로 로그인 (관리자 인증)
+        </button>
+      </form>
     </div>
   </div>
 
@@ -1269,16 +1351,29 @@
           <span class="text-mono-pink font-bold">(초기 비밀번호: <code id="adminPinHintCode">1234</code>)</span>
         </p>
       </div>
-      <form id="adminAuthForm" class="space-y-3">
-        <input
-          id="adminPinInput"
-          type="password"
-          value="1234"
-          placeholder="비밀번호 입력 (초기값 1234)"
-          class="w-full px-4 py-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 text-center text-lg font-black tracking-widest focus:outline-none focus:border-mono-pink"
-        />
-        <button type="submit" class="w-full py-3.5 rounded-2xl bg-zinc-900 dark:bg-mono-pink hover:bg-mono-pinkHover text-white font-extrabold text-sm transition shadow-md">
-          🔓 관리자 대시보드 열기
+      <form id="adminAuthForm" class="space-y-2.5 text-left">
+        <div>
+          <label class="block text-[11px] font-bold text-zinc-500 mb-1">관리자 아이디 (기본값: <code class="text-mono-pink">admin</code>)</label>
+          <input
+            id="adminIdModalInput"
+            type="text"
+            value="admin"
+            placeholder="관리자 아이디 입력"
+            class="w-full px-4 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-sm font-bold focus:outline-none focus:border-mono-pink"
+          />
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-zinc-500 mb-1">관리자 비밀번호 (기본값: <code id="adminPinHintCode" class="text-mono-pink">1234</code>)</label>
+          <input
+            id="adminPinInput"
+            type="password"
+            value="1234"
+            placeholder="비밀번호 입력 (초기값 1234)"
+            class="w-full px-4 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-sm font-bold focus:outline-none focus:border-mono-pink"
+          />
+        </div>
+        <button type="submit" class="w-full py-3.5 rounded-2xl bg-zinc-900 dark:bg-mono-pink hover:bg-mono-pinkHover text-white font-extrabold text-sm transition shadow-md mt-1">
+          🔓 관리자 백엔드 콘솔 열기
         </button>
       </form>
     </div>
@@ -1295,7 +1390,7 @@
       </div>
       <div class="flex items-center gap-3">
         <span>© 2026 MonoDate. All rights reserved.</span>
-        <button id="footerAdminBtn" type="button" class="text-[11px] text-zinc-400 hover:text-mono-pink underline">🔒 관리자</button>
+        <button id="footerAdminBtn" type="button" class="text-[11px] text-zinc-300 dark:text-zinc-700 hover:text-mono-pink transition" title="운영자 로그인">Admin</button>
       </div>
     </div>
   </footer>
@@ -1352,7 +1447,7 @@
           parking: '발렛가능',
           liked: true,
           img: SPOT_IMGS.wine,
-          searchQuery: '압구정 사브서울'
+          searchQuery: '사브서울'
         },
         {
           id: 'spot-2',
@@ -1370,7 +1465,7 @@
           parking: '인근공영주차',
           liked: true,
           img: SPOT_IMGS.cafe,
-          searchQuery: '해운대 청사포 바다당'
+          searchQuery: '청사포 바다당'
         },
         {
           id: 'spot-3',
@@ -1406,7 +1501,7 @@
           parking: '인근공영주차',
           liked: false,
           img: SPOT_IMGS.wine,
-          searchQuery: '성수 세스크멘슬'
+          searchQuery: '세스크멘슬'
         },
         {
           id: 'spot-5',
@@ -1424,7 +1519,7 @@
           parking: '도보추천',
           liked: false,
           img: SPOT_IMGS.hanok,
-          searchQuery: '북촌 차마시는뜰'
+          searchQuery: '차마시는뜰'
         },
         {
           id: 'spot-6',
@@ -1442,7 +1537,7 @@
           parking: '인근공영주차',
           liked: false,
           img: SPOT_IMGS.night,
-          searchQuery: '서순라길 비틀비틀 비틀스타코'
+          searchQuery: '비틀비틀 비틀스타코 서순라점'
         },
         {
           id: 'spot-7',
@@ -1496,21 +1591,21 @@
             { name: '서울숲 공원 (거울연못·사슴우리)', address: '서울 성동구 뚝섬로 273', searchQuery: '서울숲', tags: ['#거울연못포토존', '#산책데이트', '#24시간상시개방'], hours: '매일 00:00 - 24:00 (연중무휴 상시 개방)', openHour: 0, closeHour: 24, breakStart: 0, breakEnd: 0, cost: 0, img: SPOT_IMGS.hangang }
           ],
           cafe: [
-            { name: '오우드 성수 1호점 (OUDE)', address: '서울 성동구 연무장길 101-1', searchQuery: '오우드 성수 1호점', tags: ['#연무장길핫플', '#수제도넛&소금빵', '#채광맛집'], hours: '매일 11:00 - 22:00 (정상 영업중)', openHour: 11, closeHour: 22, breakStart: 0, breakEnd: 0, cost: 22000, img: SPOT_IMGS.cafe },
-            { name: '대림창고 갤러리컬럼', address: '서울 성동구 성수이로 78', searchQuery: '성수 대림창고', tags: ['#성수대형카페', '#갤러리전시뷰', '#베이커리맛집'], hours: '매일 11:00 - 22:00 (정상 영업중)', openHour: 11, closeHour: 22, breakStart: 0, breakEnd: 0, cost: 26000, img: SPOT_IMGS.indoor },
+            { name: '오우드 성수 1호점 (OUDE)', address: '서울 성동구 연무장길 101-1', searchQuery: '오우드 성수', tags: ['#연무장길핫플', '#수제도넛&소금빵', '#채광맛집'], hours: '매일 11:00 - 22:00 (정상 영업중)', openHour: 11, closeHour: 22, breakStart: 0, breakEnd: 0, cost: 22000, img: SPOT_IMGS.cafe },
+            { name: '대림창고 갤러리컬럼', address: '서울 성동구 성수이로 78', searchQuery: '대림창고', tags: ['#성수대형카페', '#갤러리전시뷰', '#베이커리맛집'], hours: '매일 11:00 - 22:00 (정상 영업중)', openHour: 11, closeHour: 22, breakStart: 0, breakEnd: 0, cost: 26000, img: SPOT_IMGS.indoor },
             { name: '로우키 성수 (Lowkey)', address: '서울 성동구 연무장3길 6', searchQuery: '로우키 성수', tags: ['#스페셜티커피성지', '#핸드드립맛집', '#성수로스터리'], hours: '평일 10:00-20:00 · 주말 12:00-21:00', openHour: 10, closeHour: 21, breakStart: 0, breakEnd: 0, cost: 16000, img: SPOT_IMGS.cafe }
           ],
           evening: [
-            { name: '세스크멘슬 (Xesc Menzl)', address: '서울 성동구 성수이로14길 7 1층', searchQuery: '성수 세스크멘슬', tags: ['#유럽식샤퀴테리', '#와인콜키지프리', '#잠봉뵈르&소시지'], hours: '매일 11:00 - 23:00 (정상 영업중)', openHour: 11, closeHour: 23, breakStart: 0, breakEnd: 0, cost: 48000, img: SPOT_IMGS.wine },
-            { name: 'TBD 성수 (내추럴와인 다이닝)', address: '서울 성동구 연무장길 6 1층', searchQuery: 'TBD 성수', tags: ['#성수와인바', '#라자냐맛집', '#기념일무드'], hours: '매일 12:00 - 23:00 (B.T 15:00-17:30)', openHour: 12, closeHour: 23, breakStart: 15, breakEnd: 17.5, cost: 64000, img: SPOT_IMGS.night },
-            { name: '뚝섬 한강공원 수변무대 & 야경 산책', address: '서울 광진구 강변북로 139 (자양역 도보 3분)', searchQuery: '뚝섬 한강공원', tags: ['#한강야경산책', '#한강라면피크닉', '#24시간개방'], hours: '매일 00:00 - 24:00 (상시 개방 · 편의점 24시)', openHour: 0, closeHour: 24, breakStart: 0, breakEnd: 0, cost: 24000, img: SPOT_IMGS.hangang }
+            { name: '세스크멘슬 (Xesc Menzl)', address: '서울 성동구 성수이로14길 7 1층', searchQuery: '세스크멘슬', tags: ['#유럽식샤퀴테리', '#와인콜키지프리', '#잠봉뵈르&소시지'], hours: '매일 11:00 - 23:00 (정상 영업중)', openHour: 11, closeHour: 23, breakStart: 0, breakEnd: 0, cost: 48000, img: SPOT_IMGS.wine },
+            { name: 'TBD 성수 (내추럴와인 다이닝)', address: '서울 성동구 연무장길 6 1층', searchQuery: '성수 TBD', tags: ['#성수와인바', '#라자냐맛집', '#기념일무드'], hours: '매일 12:00 - 23:00 (B.T 15:00-17:30)', openHour: 12, closeHour: 23, breakStart: 15, breakEnd: 17.5, cost: 64000, img: SPOT_IMGS.night },
+            { name: '뚝섬 한강공원 수변무대 & 야경 산책', address: '서울 광진구 강변북로 139 (자양역 도보 3분)', searchQuery: '뚝섬한강공원', tags: ['#한강야경산책', '#한강라면피크닉', '#24시간개방'], hours: '매일 00:00 - 24:00 (상시 개방 · 편의점 24시)', openHour: 0, closeHour: 24, breakStart: 0, breakEnd: 0, cost: 24000, img: SPOT_IMGS.hangang }
           ]
         },
         '강남/압구정': {
           meal: [
             { name: '스케줄청담', address: '서울 강남구 선릉로152길 37 1층', searchQuery: '스케줄청담', tags: ['#청담대표다이닝', '#김치볶음밥&스테이크', '#발렛주차'], hours: '매일 11:00 - 24:00 (브레이크타임 없음 · 심야영업)', openHour: 11, closeHour: 24, breakStart: 0, breakEnd: 0, cost: 64000, img: SPOT_IMGS.wine },
             { name: '꿉당 신사점', address: '서울 서초구 강남대로 615 (신사역 5번 출구)', searchQuery: '꿉당 신사점', tags: ['#미쉐린빕구르망', '#숙성목살그릴링', '#웨이팅맛집'], hours: '매일 15:00 - 23:20 (브레이크타임 없음)', openHour: 15, closeHour: 23.3, breakStart: 0, breakEnd: 0, cost: 54000, img: SPOT_IMGS.hanok },
-            { name: '멜팅샵 X 치즈룸 도산공원', address: '서울 강남구 압구정로46길 55', searchQuery: '멜팅샵 치즈룸 도산공원', tags: ['#도산공원맛집', '#리코타치즈멜팅', '#분위기레스토랑'], hours: '매일 11:00 - 22:00 (브레이크타임 없음)', openHour: 11, closeHour: 22, breakStart: 0, breakEnd: 0, cost: 62000, img: SPOT_IMGS.wine }
+            { name: '꽁티드툴레아 도산 (Conte de Tulear)', address: '서울 강남구 도산대로49길 39', searchQuery: '꽁티드툴레아', tags: ['#도산공원정원테라스', '#브런치&와인다이닝', '#인생샷명소'], hours: '월~토 11:00-24:00 · 일 11:00-23:00', openHour: 11, closeHour: 24, breakStart: 0, breakEnd: 0, cost: 58000, img: SPOT_IMGS.wine }
           ],
           activity: [
             { name: '하우스 노웨어 도산 (젠틀몬스터 쇼룸)', address: '서울 강남구 압구정로46길 50', searchQuery: '하우스 도산', tags: ['#설치미술전시', '#탬버린즈&젠틀몬스터', '#실내포토존'], hours: '매일 11:00 - 21:00 (정상 영업중)', openHour: 11, closeHour: 21, breakStart: 0, breakEnd: 0, cost: 0, img: SPOT_IMGS.indoor },
@@ -1523,53 +1618,53 @@
             { name: '맘마미아 도산 (Mamma Mia)', address: '서울 강남구 압구정로42길 45', searchQuery: '압구정 맘마미아', tags: ['#핑크맨션포토존', '#야외정원테라스', '#디저트천국'], hours: '매일 10:00 - 23:00 (야간 영업중)', openHour: 10, closeHour: 23, breakStart: 0, breakEnd: 0, cost: 24000, img: SPOT_IMGS.cafe }
           ],
           evening: [
-            { name: '사브서울 (SAV SEOUL)', address: '서울 강남구 논현로175길 6 B1', searchQuery: '압구정 사브서울', tags: ['#압구정와인성지', '#동굴와이너리무드', '#발렛주차'], hours: '월~수 18:00-24:00 · 목~토 18:00-02:00', openHour: 18, closeHour: 26, breakStart: 0, breakEnd: 0, cost: 68000, img: SPOT_IMGS.night },
+            { name: '사브서울 (SAV SEOUL)', address: '서울 강남구 논현로175길 6 B1', searchQuery: '사브서울', tags: ['#압구정와인성지', '#동굴와이너리무드', '#발렛주차'], hours: '월~수 18:00-24:00 · 목~토 18:00-02:00', openHour: 18, closeHour: 26, breakStart: 0, breakEnd: 0, cost: 68000, img: SPOT_IMGS.night },
             { name: '앨리스 청담 (Alice Cheongdam)', address: '서울 강남구 도산대로55길 47 B1', searchQuery: '앨리스 청담', tags: ['#아시아베스트바50', '#시그니처칵테일', '#심야데이트'], hours: '매일 18:00 - 02:00 (금·토 03:00까지 심야영업)', openHour: 18, closeHour: 27, breakStart: 0, breakEnd: 0, cost: 65000, img: SPOT_IMGS.night },
-            { name: '하트타임 도산 (Heart Time)', address: '서울 강남구 언주로168길 25 B1', searchQuery: '도산공원 하트타임', tags: ['#와인다이닝바', '#라이브공연무드', '#기념일데이트'], hours: '매일 17:30 - 01:00 (심야 영업중)', openHour: 17.5, closeHour: 25, breakStart: 0, breakEnd: 0, cost: 72000, img: SPOT_IMGS.night }
+            { name: '르챔버 청담 (Le Chamber)', address: '서울 강남구 도산대로55길 42 B1', searchQuery: '르챔버', tags: ['#책장문스피크이지바', '#아시아베스트바', '#재즈피아노&칵테일'], hours: '매일 19:00 - 03:00 (연중무휴 심야영업)', openHour: 19, closeHour: 27, breakStart: 0, breakEnd: 0, cost: 68000, img: SPOT_IMGS.night }
           ]
         },
         '북촌 한옥마을': {
           meal: [
             { name: '안국 깡통만두', address: '서울 종로구 북촌로2길 5-6 (안국역 2번 출구)', searchQuery: '안국 깡통만두', tags: ['#수요미식회맛집', '#칼만두&비빔국수', '#안국필수코스'], hours: '11:30 - 21:00 (B.T 15:30-17:00 · 일 휴무)', openHour: 11.5, closeHour: 21, breakStart: 15.5, breakEnd: 17, cost: 28000, img: SPOT_IMGS.hanok },
-            { name: '도토리브라더스 안국', address: '서울 종로구 경희궁길 41 / 안국 한옥골목', searchQuery: '도토리브라더스', tags: ['#대창덮밥&연어덮밥', '#정갈한가정식', '#데이트맛집'], hours: '매일 11:30 - 21:00 (B.T 15:00-17:00)', openHour: 11.5, closeHour: 21, breakStart: 15, breakEnd: 17, cost: 34000, img: SPOT_IMGS.wine },
+            { name: '다운타우너 안국 (한옥 수제버거)', address: '서울 종로구 북촌로 6-4', searchQuery: '다운타우너 안국', tags: ['#한옥수제버거맛집', '#아보카도&트러플버거', '#브레이크타임없음'], hours: '매일 11:00 - 21:00 (브레이크타임 없음)', openHour: 11, closeHour: 21, breakStart: 0, breakEnd: 0, cost: 32000, img: SPOT_IMGS.wine },
             { name: '정담은보쌈 북촌점', address: '서울 종로구 계동길 33-9', searchQuery: '정담은보쌈 북촌점', tags: ['#한옥독채보쌈', '#고즈넉한중정뷰', '#북촌한식맛집'], hours: '매일 11:30 - 22:00 (주말 브레이크타임 없음)', openHour: 11.5, closeHour: 22, breakStart: 0, breakEnd: 0, cost: 42000, img: SPOT_IMGS.hanok }
           ],
           activity: [
             { name: '국립현대미술관 서울관 (MMCA)', address: '서울 종로구 삼청로 30', searchQuery: '국립현대미술관 서울', tags: ['#삼청동전시관람', '#실내미술관데이트', '#수·토야간개장'], hours: '10:00 - 18:00 (수·토 21:00까지 야간개장)', openHour: 10, closeHour: 21, breakStart: 0, breakEnd: 0, cost: 10000, img: SPOT_IMGS.indoor },
-            { name: '북촌문화센터 & 북촌한옥마을 전망대', address: '서울 종로구 계동길 37', searchQuery: '북촌문화센터', tags: ['#전통한옥해설', '#북촌포토존', '#고즈넉한산책'], hours: '매일 09:00 - 18:00 (정상 운영중)', openHour: 9, closeHour: 18, breakStart: 0, breakEnd: 0, cost: 0, img: SPOT_IMGS.hanok },
+            { name: '서울공예박물관 (안국 전시·산책)', address: '서울 종로구 율곡로3길 4', searchQuery: '서울공예박물관', tags: ['#안국역1번출구바로앞', '#무료상설전시', '#야외정원포토존'], hours: '화~일 10:00 - 18:00 (정상 운영중)', openHour: 10, closeHour: 18, breakStart: 0, breakEnd: 0, cost: 0, img: SPOT_IMGS.hanok },
             { name: '서순라길 종묘 돌담길 & 공방거리', address: '서울 종로구 서순라길 89 일대', searchQuery: '서순라길', tags: ['#종묘돌담길산책', '#주얼리공방거리', '#24시간산책로'], hours: '매일 00:00 - 24:00 (돌담길 상시 개방)', openHour: 0, closeHour: 24, breakStart: 0, breakEnd: 0, cost: 0, img: SPOT_IMGS.hanok }
           ],
           cafe: [
-            { name: '차마시는뜰 (차뜰)', address: '서울 종로구 북촌로11나길 26', searchQuery: '북촌 차마시는뜰', tags: ['#100년한옥중정뷰', '#단호박시루떡', '#전통차힐링'], hours: '수~월 10:00 - 19:00 (브레이크타임 없음)', openHour: 10, closeHour: 19, breakStart: 0, breakEnd: 0, cost: 22000, img: SPOT_IMGS.hanok },
+            { name: '차마시는뜰 (차뜰)', address: '서울 종로구 북촌로11나길 26', searchQuery: '차마시는뜰', tags: ['#100년한옥중정뷰', '#단호박시루떡', '#전통차힐링'], hours: '수~월 10:00 - 19:00 (브레이크타임 없음)', openHour: 10, closeHour: 19, breakStart: 0, breakEnd: 0, cost: 22000, img: SPOT_IMGS.hanok },
             { name: '런던베이글뮤지엄 안국점', address: '서울 종로구 북촌로4길 20', searchQuery: '런던베이글뮤지엄 안국점', tags: ['#포테이토치즈베이글', '#캐치테이블원격줄서기', '#안국핫플'], hours: '매일 08:00 - 18:00 (정상 영업중)', openHour: 8, closeHour: 18, breakStart: 0, breakEnd: 0, cost: 22000, img: SPOT_IMGS.cafe },
             { name: '아티스트베이커리 안국', address: '서울 종로구 율곡로 45 1층 (안국역 1번 출구)', searchQuery: '아티스트베이커리 안국', tags: ['#소금빵바게트성지', '#유럽풍테라스', '#브런치카페'], hours: '매일 08:00 - 20:00 (정상 영업중)', openHour: 8, closeHour: 20, breakStart: 0, breakEnd: 0, cost: 20000, img: SPOT_IMGS.cafe }
           ],
           evening: [
-            { name: '비틀비틀 비틀스타코 서순라점', address: '서울 종로구 서순라길 89-7 1층', searchQuery: '서순라길 비틀비틀 비틀스타코', tags: ['#서순라길돌담길뷰', '#비리아타코&와인', '#야외테라스'], hours: '월~목 16:00-23:00 · 금~일 12:00-23:00', openHour: 12, closeHour: 23, breakStart: 0, breakEnd: 0, cost: 44000, img: SPOT_IMGS.night },
+            { name: '비틀비틀 비틀스타코 서순라점', address: '서울 종로구 서순라길 89-7 1층', searchQuery: '비틀비틀 비틀스타코 서순라점', tags: ['#서순라길돌담길뷰', '#비리아타코&와인', '#야외테라스'], hours: '월~목 16:00-23:00 · 금~일 12:00-23:00', openHour: 12, closeHour: 23, breakStart: 0, breakEnd: 0, cost: 44000, img: SPOT_IMGS.night },
             { name: '파이프그라운드 서순라길', address: '서울 종로구 서순라길 107', searchQuery: '서순라길 파이프그라운드', tags: ['#옥수수피자맛집', '#서순라길와인', '#돌담길야경'], hours: '매일 16:00 - 23:00 (주말 12:00 오픈)', openHour: 12, closeHour: 23, breakStart: 0, breakEnd: 0, cost: 48000, img: SPOT_IMGS.night },
-            { name: '청운문학도서관 & 인왕산 초소책방 야경', address: '서울 종로구 인왕산로 172', searchQuery: '인왕산 초소책방', tags: ['#서울성곽야경뷰', '#드라이브&산책', '#야간베이커리'], hours: '매일 08:00 - 22:00 (성곽 야경 산책로 24시)', openHour: 8, closeHour: 24, breakStart: 0, breakEnd: 0, cost: 18000, img: SPOT_IMGS.night }
+            { name: '더숲 초소책방 (인왕산 야경 전망 카페)', address: '서울 종로구 인왕산로 172', searchQuery: '더숲 초소책방', tags: ['#서울남산타워야경뷰', '#인왕산드라이브', '#야간베이커리'], hours: '매일 08:00 - 22:00 (연중무휴 영업중)', openHour: 8, closeHour: 22, breakStart: 0, breakEnd: 0, cost: 18000, img: SPOT_IMGS.night }
           ]
         },
         '한강/여의도': {
           meal: [
-            { name: '수티 더현대서울점 (Sooty)', address: '서울 영등포구 여의대로 108 더현대서울 B1', searchQuery: '더현대서울 수티', tags: ['#비프앤치킨스테이크', '#실내쾌적다이닝', '#주차완비'], hours: '매일 10:30 - 20:30 (브레이크타임 없음)', openHour: 10.5, closeHour: 20.5, breakStart: 0, breakEnd: 0, cost: 52000, img: SPOT_IMGS.wine },
+            { name: '수티 더현대서울점 (Sooty)', address: '서울 영등포구 여의대로 108 더현대서울 B1', searchQuery: '수티 더현대서울', tags: ['#비프앤치킨스테이크', '#실내쾌적다이닝', '#주차완비'], hours: '매일 10:30 - 20:30 (브레이크타임 없음)', openHour: 10.5, closeHour: 20.5, breakStart: 0, breakEnd: 0, cost: 52000, img: SPOT_IMGS.wine },
             { name: '세상의모든아침 여의도점', address: '서울 영등포구 여의대로 24 전경련회관 50층', searchQuery: '세상의모든아침 여의도점', tags: ['#50층한강파노라마뷰', '#기념일브런치&디너', '#주차완비'], hours: '매일 10:00 - 22:00 (B.T 15:00-17:00)', openHour: 10, closeHour: 22, breakStart: 15, breakEnd: 17, cost: 68000, img: SPOT_IMGS.hangang },
-            { name: '이탈리 더현대서울점 (EATALY)', address: '서울 영등포구 여의대로 108 더현대서울 6층', searchQuery: '더현대서울 이탈리', tags: ['#정통이탈리안파스타', '#화덕피자&와인', '#실내정원뷰'], hours: '매일 10:30 - 22:00 (브레이크타임 없음)', openHour: 10.5, closeHour: 22, breakStart: 0, breakEnd: 0, cost: 56000, img: SPOT_IMGS.wine }
+            { name: '이탈리 더현대서울점 (EATALY)', address: '서울 영등포구 여의대로 108 더현대서울 6층', searchQuery: '이탈리 더현대서울', tags: ['#정통이탈리안파스타', '#화덕피자&와인', '#실내정원뷰'], hours: '매일 10:30 - 22:00 (브레이크타임 없음)', openHour: 10.5, closeHour: 22, breakStart: 0, breakEnd: 0, cost: 56000, img: SPOT_IMGS.wine }
           ],
           activity: [
-            { name: '여의도 한강공원 & 서울달(SEOULDAL)', address: '서울 영등포구 여의동로 330 (여의나루역 2번 출구)', searchQuery: '여의도 한강공원', tags: ['#골든아워노을명소', '#서울달열기구야경', '#24시간개방'], hours: '공원 24시간 개방 · 서울달 화~일 12:00-22:00', openHour: 0, closeHour: 24, breakStart: 0, breakEnd: 0, cost: 15000, img: SPOT_IMGS.hangang },
-            { name: '더현대 서울 알트원 (ALT.1 전시관)', address: '서울 영등포구 여의대로 108 더현대서울 6층', searchQuery: '더현대서울 알트원', tags: ['#실내미디어아트전시', '#비오는날추천', '#사운즈포레스트'], hours: '월~목 10:30-20:00 · 금~일 10:30-20:30', openHour: 10.5, closeHour: 20.5, breakStart: 0, breakEnd: 0, cost: 30000, img: SPOT_IMGS.indoor },
+            { name: '여의도 한강공원 & 서울달(SEOULDAL)', address: '서울 영등포구 여의동로 330 (여의나루역 2번 출구)', searchQuery: '여의도한강공원', tags: ['#골든아워노을명소', '#서울달열기구야경', '#24시간개방'], hours: '공원 24시간 개방 · 서울달 화~일 12:00-22:00', openHour: 0, closeHour: 24, breakStart: 0, breakEnd: 0, cost: 15000, img: SPOT_IMGS.hangang },
+            { name: '더현대 서울 알트원 (ALT.1 전시관)', address: '서울 영등포구 여의대로 108 더현대서울 6층', searchQuery: '더현대 서울 ALT.1', tags: ['#실내미디어아트전시', '#비오는날추천', '#사운즈포레스트'], hours: '월~목 10:30-20:00 · 금~일 10:30-20:30', openHour: 10.5, closeHour: 20.5, breakStart: 0, breakEnd: 0, cost: 30000, img: SPOT_IMGS.indoor },
             { name: '여의도 이랜드크루즈 (한강 유람선)', address: '서울 영등포구 여의동로 290 여의도선착장', searchQuery: '여의도 이랜드크루즈', tags: ['#선셋&달빛크루즈', '#갈매기먹이주기', '#한강야경투어'], hours: '화~일 14:00 - 21:30 (출항 시간표 운영)', openHour: 14, closeHour: 21.5, breakStart: 0, breakEnd: 0, cost: 38000, img: SPOT_IMGS.hangang }
           ],
           cafe: [
-            { name: '카페 레이어드 더현대서울점', address: '서울 영등포구 여의대로 108 더현대서울 B1', searchQuery: '카페 레이어드 더현대서울', tags: ['#유럽풍스콘맛집', '#수제케이크', '#실내디저트타임'], hours: '매일 10:30 - 20:30 (정상 영업중)', openHour: 10.5, closeHour: 20.5, breakStart: 0, breakEnd: 0, cost: 20000, img: SPOT_IMGS.cafe },
+            { name: '카페 레이어드 더현대서울점', address: '서울 영등포구 여의대로 108 더현대서울 B1', searchQuery: '카페 레이어드 더현대서울점', tags: ['#유럽풍스콘맛집', '#수제케이크', '#실내디저트타임'], hours: '매일 10:30 - 20:30 (정상 영업중)', openHour: 10.5, closeHour: 20.5, breakStart: 0, breakEnd: 0, cost: 20000, img: SPOT_IMGS.cafe },
             { name: '블루보틀 여의도 더현대서울점', address: '서울 영등포구 여의대로 108 더현대서울 5층', searchQuery: '블루보틀 여의도', tags: ['#사운즈포레스트뷰', '#놀라플로트', '#실내정원카페'], hours: '매일 10:30 - 20:30 (정상 영업중)', openHour: 10.5, closeHour: 20.5, breakStart: 0, breakEnd: 0, cost: 18000, img: SPOT_IMGS.cafe },
-            { name: '콘디토리오븐 더현대서울점', address: '서울 영등포구 여의대로 108 더현대서울 B1', searchQuery: '콘디토리오븐 더현대서울', tags: ['#구움과자&까눌레', '#파르페맛집', '#쾌적한좌석'], hours: '매일 10:30 - 20:30 (정상 영업중)', openHour: 10.5, closeHour: 20.5, breakStart: 0, breakEnd: 0, cost: 19000, img: SPOT_IMGS.cafe }
+            { name: '테일러커피 더현대서울점', address: '서울 영등포구 여의대로 108 더현대서울 B1', searchQuery: '테일러커피 더현대서울', tags: ['#크림모카맛집', '#아인슈페너성지', '#실내디저트카페'], hours: '매일 10:30 - 20:30 (정상 영업중)', openHour: 10.5, closeHour: 20.5, breakStart: 0, breakEnd: 0, cost: 18000, img: SPOT_IMGS.cafe }
           ],
           evening: [
-            { name: '와인웍스 더현대서울점 (Wine Works)', address: '서울 영등포구 여의대로 108 더현대서울 B1', searchQuery: '와인웍스 더현대서울점', tags: ['#4000종와인셀렉션', '#스테이크&파스타', '#실내와인바'], hours: '매일 10:30 - 22:00 (식당가 야간 연장 영업)', openHour: 10.5, closeHour: 22, breakStart: 0, breakEnd: 0, cost: 58000, img: SPOT_IMGS.night },
+            { name: '와인웍스 더현대서울점 (Wine Works)', address: '서울 영등포구 여의대로 108 더현대서울 B1', searchQuery: '와인웍스 더현대서울', tags: ['#4000종와인셀렉션', '#스테이크&파스타', '#실내와인바'], hours: '매일 10:30 - 22:00 (식당가 야간 연장 영업)', openHour: 10.5, closeHour: 22, breakStart: 0, breakEnd: 0, cost: 58000, img: SPOT_IMGS.night },
             { name: '북악스카이웨이 팔각정 전망대', address: '서울 종로구 북악산로 267 (전망대 주차장 완비)', searchQuery: '북악스카이웨이 팔각정', tags: ['#서울심야드라이브1위', '#360도파노라마야경', '#24시간개방'], hours: '매일 00:00 - 24:00 (전망대 연중무휴 상시 개방)', openHour: 0, closeHour: 24, breakStart: 0, breakEnd: 0, cost: 15000, img: SPOT_IMGS.night },
-            { name: '반포 한강공원 달빛무지개분수 & 세빛섬', address: '서울 서초구 신반포로11길 40', searchQuery: '반포 한강공원 세빛섬', tags: ['#세빛섬야경산책', '#튜브스터&치맥', '#24시간개방'], hours: '매일 00:00 - 24:00 (공원 및 야경 산책로 24시)', openHour: 0, closeHour: 24, breakStart: 0, breakEnd: 0, cost: 28000, img: SPOT_IMGS.hangang }
+            { name: '반포 한강공원 달빛무지개분수 & 세빛섬', address: '서울 서초구 신반포로11길 40', searchQuery: '반포한강공원 세빛섬', tags: ['#세빛섬야경산책', '#튜브스터&치맥', '#24시간개방'], hours: '매일 00:00 - 24:00 (공원 및 야경 산책로 24시)', openHour: 0, closeHour: 24, breakStart: 0, breakEnd: 0, cost: 28000, img: SPOT_IMGS.hangang }
           ]
         },
         '부산 해운대': {
@@ -1579,17 +1674,17 @@
             { name: '해운대 암소갈비집', address: '부산 해운대구 해운대해변로333번길 9', searchQuery: '해운대 암소갈비집', tags: ['#60년전통한우갈비', '#감자사리필수', '#발렛주차'], hours: '매일 11:30 - 22:00 (B.T 15:15-16:30)', openHour: 11.5, closeHour: 22, breakStart: 15.25, breakEnd: 16.5, cost: 96000, img: SPOT_IMGS.hanok }
           ],
           activity: [
-            { name: '해운대 블루라인파크 스카이캡슐 미포정거장', address: '부산 해운대구 달맞이길62번길 13', searchQuery: '해운대 블루라인파크 미포정거장', tags: ['#스카이캡슐바다열차', '#미포~청사포오션뷰', '#인생샷필수'], hours: '매일 09:30 - 19:30 (성수기 20:30까지 운행)', openHour: 9.5, closeHour: 20, breakStart: 0, breakEnd: 0, cost: 35000, img: SPOT_IMGS.hangang },
+            { name: '해운대 블루라인파크 스카이캡슐 미포정거장', address: '부산 해운대구 달맞이길62번길 13', searchQuery: '해운대블루라인파크 미포정거장', tags: ['#스카이캡슐바다열차', '#미포~청사포오션뷰', '#인생샷필수'], hours: '매일 09:30 - 19:30 (성수기 20:30까지 운행)', openHour: 9.5, closeHour: 20, breakStart: 0, breakEnd: 0, cost: 35000, img: SPOT_IMGS.hangang },
             { name: '부산 엑스더스카이 (엘시티 100층 전망대)', address: '부산 해운대구 달맞이길 30 엘시티 랜드마크타워', searchQuery: '부산 엑스더스카이', tags: ['#해운대100층오션뷰', '#비오는날실내추천', '#주차완비'], hours: '매일 10:00 - 21:00 (연중무휴 영업중)', openHour: 10, closeHour: 21, breakStart: 0, breakEnd: 0, cost: 48000, img: SPOT_IMGS.indoor },
             { name: '해운대 해수욕장 & 동백섬 해안산책로', address: '부산 해운대구 우동 710-1', searchQuery: '해운대 동백섬', tags: ['#누리마루바다산책', '#마린시티포토존', '#24시간개방'], hours: '매일 00:00 - 24:00 (연중무휴 상시 개방)', openHour: 0, closeHour: 24, breakStart: 0, breakEnd: 0, cost: 0, img: SPOT_IMGS.hangang }
           ],
           cafe: [
-            { name: '바다당 해운대 청사포역점', address: '부산 해운대구 청사포로 125-1', searchQuery: '해운대 청사포 바다당', tags: ['#해변열차오션뷰', '#청사포대형베이커리', '#루프탑포토존'], hours: '매일 09:30 - 21:00 (정상 영업중)', openHour: 9.5, closeHour: 21, breakStart: 0, breakEnd: 0, cost: 18000, img: SPOT_IMGS.cafe },
+            { name: '바다당 해운대 청사포역점', address: '부산 해운대구 청사포로 125-1', searchQuery: '청사포 바다당', tags: ['#해변열차오션뷰', '#청사포대형베이커리', '#루프탑포토존'], hours: '매일 09:30 - 21:00 (정상 영업중)', openHour: 9.5, closeHour: 21, breakStart: 0, breakEnd: 0, cost: 18000, img: SPOT_IMGS.cafe },
             { name: '리베르타 청사포점 (Liberta)', address: '부산 해운대구 청사포로 137', searchQuery: '리베르타 청사포점', tags: ['#청사포윤슬맛집', '#통창오션뷰카페', '#소금빵&구움과자'], hours: '매일 09:00 - 19:30 (정상 영업중)', openHour: 9, closeHour: 19.5, breakStart: 0, breakEnd: 0, cost: 18000, img: SPOT_IMGS.cafe },
             { name: '모모스커피 마린시티점', address: '부산 해운대구 마린시티1로 91', searchQuery: '모모스커피 마린시티', tags: ['#월드바리스타챔피언', '#마린시티바다뷰', '#스페셜티커피'], hours: '매일 08:00 - 21:00 (정상 영업중)', openHour: 8, closeHour: 21, breakStart: 0, breakEnd: 0, cost: 16000, img: SPOT_IMGS.cafe }
           ],
           evening: [
-            { name: '더베이101 핑거스앤챗', address: '부산 해운대구 동백로 52 더베이101 1층', searchQuery: '더베이101 핑거스앤챗', tags: ['#마린시티마천루야경', '#농어피시앤칩스&생맥주', '#부산밤바다'], hours: '매일 10:00 - 24:00 (연중무휴 야간 영업중)', openHour: 10, closeHour: 24, breakStart: 0, breakEnd: 0, cost: 38000, img: SPOT_IMGS.night },
+            { name: '더베이101 핑거스앤챗', address: '부산 해운대구 동백로 52 더베이101 1층', searchQuery: '더베이101', tags: ['#마린시티마천루야경', '#농어피시앤칩스&생맥주', '#부산밤바다'], hours: '매일 10:00 - 24:00 (연중무휴 야간 영업중)', openHour: 10, closeHour: 24, breakStart: 0, breakEnd: 0, cost: 38000, img: SPOT_IMGS.night },
             { name: '해운대 클램 (CLAM 오션뷰 타파스&와인)', address: '부산 해운대구 해운대해변로 292', searchQuery: '해운대 클램', tags: ['#해운대해변정면뷰', '#스페인감바스&생맥주', '#심야펍'], hours: '매일 17:00 - 02:00 (주말 15:00 오픈 · 심야영업)', openHour: 15, closeHour: 26, breakStart: 0, breakEnd: 0, cost: 45000, img: SPOT_IMGS.night },
             { name: '수변최고돼지국밥 민락본점 (24시)', address: '부산 수영구 광안해변로370번길 9-32', searchQuery: '수변최고돼지국밥 민락본점', tags: ['#광안대교야경인근', '#항정수육백반', '#24시간심야영업'], hours: '매일 00:00 - 24:00 (24시간 연중무휴 영업중)', openHour: 0, closeHour: 24, breakStart: 0, breakEnd: 0, cost: 32000, img: SPOT_IMGS.hanok }
           ]
@@ -1604,9 +1699,9 @@
           { name: '미쁘동 연남본점', address: '서울 마포구 동교로38길 33-21 2층', searchQuery: '미쁘동 연남본점', tags: ['#토마토연어국수', '#미쁘동카이센동', '#브레이크타임없음'], hours: '매일 11:00 - 22:00 (브레이크타임 없이 영업중)', openHour: 11, closeHour: 22, breakStart: 0, breakEnd: 0, cost: 42000, img: SPOT_IMGS.hanok }
         ],
         activity: [
-          { name: '경의선숲길 공원 (연트럴파크)', address: '서울 마포구 연남동 227-16', searchQuery: '연트럴파크 경의선숲길', tags: ['#연트럴파크산책', '#피크닉거리', '#24시간상시개방'], hours: '매일 00:00 - 24:00 (연중무휴 상시 개방)', openHour: 0, closeHour: 24, breakStart: 0, breakEnd: 0, cost: 0, img: SPOT_IMGS.hangang },
+          { name: '경의선숲길 공원 (연트럴파크)', address: '서울 마포구 연남동 227-16', searchQuery: '경의선숲길', tags: ['#연트럴파크산책', '#피크닉거리', '#24시간상시개방'], hours: '매일 00:00 - 24:00 (연중무휴 상시 개방)', openHour: 0, closeHour: 24, breakStart: 0, breakEnd: 0, cost: 0, img: SPOT_IMGS.hangang },
           { name: '오브젝트 서교점 (Object)', address: '서울 마포구 와우산로35길 13', searchQuery: '오브젝트 서교점', tags: ['#홍대대표소품샵', '#커플다이어리&굿즈', '#전시팝업'], hours: '매일 12:00 - 21:00 (정상 영업중)', openHour: 12, closeHour: 21, breakStart: 0, breakEnd: 0, cost: 15000, img: SPOT_IMGS.indoor },
-          { name: 'KT&G 상상마당 홍대 디자인스퀘어 & 갤러리', address: '서울 마포구 어울마당로 65', searchQuery: 'KT&G 상상마당 홍대', tags: ['#실내전시&소품샵', '#비오는날데이트', '#포토부스'], hours: '매일 11:00 - 21:00 (정상 영업중)', openHour: 11, closeHour: 21, breakStart: 0, breakEnd: 0, cost: 12000, img: SPOT_IMGS.indoor }
+          { name: 'KT&G 상상마당 홍대 디자인스퀘어 & 갤러리', address: '서울 마포구 어울마당로 65', searchQuery: '상상마당 홍대', tags: ['#실내전시&소품샵', '#비오는날데이트', '#포토부스'], hours: '매일 11:00 - 21:00 (정상 영업중)', openHour: 11, closeHour: 21, breakStart: 0, breakEnd: 0, cost: 12000, img: SPOT_IMGS.indoor }
         ],
         cafe: [
           { name: '브라운하우스 연남 (Braunhaus)', address: '서울 마포구 동교로50길 25', searchQuery: '브라운하우스 연남', tags: ['#주택개조감성카페', '#크림라떼맛집', '#연남조용한카페'], hours: '매일 12:00 - 22:00 (정상 영업중)', openHour: 12, closeHour: 22, breakStart: 0, breakEnd: 0, cost: 18000, img: SPOT_IMGS.cafe },
@@ -1615,12 +1710,37 @@
         ],
         evening: [
           { name: '연남와인', address: '서울 마포구 동교로38길 33-15 2층', searchQuery: '연남와인', tags: ['#연남동대표와인바', '#가성비와인&스테이크', '#아늑한조명'], hours: '매일 17:00 - 01:00 (주말 02:00까지 심야영업)', openHour: 17, closeHour: 25, breakStart: 0, breakEnd: 0, cost: 45000, img: SPOT_IMGS.night },
-          { name: '33 유콘 (33 YUKON 연남 칵테일·위스키바)', address: '서울 마포구 와우산로37길 40', searchQuery: '연남 33유콘', tags: ['#숨겨진스피크이지바', '#맞춤형칵테일', '#심야데이트'], hours: '매일 18:00 - 02:00 (심야 영업중)', openHour: 18, closeHour: 26, breakStart: 0, breakEnd: 0, cost: 42000, img: SPOT_IMGS.night },
+          { name: '블랑누아 연남 (Blanc Noir 와인바)', address: '서울 마포구 연희로1길 15 2층', searchQuery: '연남동 블랑누아', tags: ['#연남동감성와인바', '#바질크림뇨끼&스테이크', '#소개팅2차성지'], hours: '매일 17:00 - 01:00 (주말 02:00까지 심야영업)', openHour: 17, closeHour: 25, breakStart: 0, breakEnd: 0, cost: 46000, img: SPOT_IMGS.night },
           { name: '작당모의 연남 (와인·타파스 비스트로)', address: '서울 마포구 동교로32길 19', searchQuery: '연남동 작당모의', tags: ['#트러플뇨끼맛집', '#와인&하이볼', '#분위기좋은술집'], hours: '매일 17:00 - 02:00 (심야 영업중)', openHour: 17, closeHour: 26, breakStart: 0, breakEnd: 0, cost: 46000, img: SPOT_IMGS.night }
         ]
       };
 
       // 영업시간 파싱 및 실시간/방문시간대 영업 여부 판별 헬퍼
+      // 네이버 지도 '검색 결과 없음' 완벽 방지용 클린 쿼리 & 도로명주소 직결 빌더
+      function cleanPlaceQuery(rawText) {
+        if (!rawText) return '성수동 맛집';
+        return String(rawText)
+          .replace(/\([^)]*\)/g, ' ')
+          .replace(/\[[^\]]*\]/g, ' ')
+          .replace(/[\/·&]/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
+
+      function buildNaverSearchUrl(placeName, explicitSearchQuery) {
+        const q = explicitSearchQuery ? cleanPlaceQuery(explicitSearchQuery) : cleanPlaceQuery(placeName);
+        return 'https://map.naver.com/p/search/' + encodeURIComponent(q);
+      }
+
+      function buildNaverAddressUrl(address, fallbackQuery) {
+        const base = String(address || fallbackQuery || '서울 성동구 뚝섬로9길 20')
+          .replace(/\([^)]*\)/g, ' ')
+          .replace(/\s+(B1|B2|1층|2층|3층|4층|5층|6층|50층|일대).*$/i, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+        return 'https://map.naver.com/p/search/' + encodeURIComponent(base);
+      }
+
       function parseTimeStrToFloat(timeStr) {
         if (!timeStr) return 12;
         const parts = String(timeStr).split(':');
@@ -1814,14 +1934,25 @@
                     <span class="font-bold text-amber-500">⭐ ${spot.rating}</span>
                     <span class="px-2 py-0.5 rounded bg-pink-50 dark:bg-zinc-700 text-mono-pink font-semibold">${spot.parking}</span>
                   </div>
-                  <a
-                    href="https://map.naver.com/p/search/${encodeURIComponent(spot.searchQuery)}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="font-extrabold text-emerald-600 dark:text-emerald-400 hover:underline"
-                  >
-                    N 네이버 플레이스 확인 ›
-                  </a>
+                  <div class="flex items-center gap-2">
+                    <a
+                      href="${buildNaverAddressUrl(spot.address, spot.searchQuery)}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="도로명 주소로 정확한 위치 핀 열기"
+                      class="px-2 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200 font-bold text-[11px] hover:border-mono-pink transition"
+                    >
+                      📍 주소핀
+                    </a>
+                    <a
+                      href="${buildNaverSearchUrl(spot.title, spot.searchQuery)}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="font-extrabold text-emerald-600 dark:text-emerald-400 hover:underline"
+                    >
+                      N 네이버 플레이스 ›
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1988,7 +2119,8 @@
         if (container) {
           container.innerHTML = aiState.currentStops.map((stop, idx) => {
             const isLast = idx === aiState.currentStops.length - 1;
-            const naverUrl = `https://map.naver.com/p/search/${encodeURIComponent(stop.searchQuery || (aiState.region + ' ' + stop.name))}`;
+            const naverUrl = buildNaverSearchUrl(stop.name, stop.searchQuery);
+            const addrUrl = buildNaverAddressUrl(stop.address, stop.searchQuery);
             const openCheckText = aiState.filterRealtimeNow
               ? '🟢 실존·현재 영업중 검증 완료'
               : `🟢 실존 매장 · ${stop.time} 방문 시 정상 영업 (브레이크타임 회피)`;
@@ -2024,14 +2156,25 @@
                     >
                       <span>🔄 다른 영업중 매장 변경</span>
                     </button>
-                    <a
-                      href="${naverUrl}"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-xs font-extrabold transition"
-                    >
-                      N 네이버 플레이스 ›
-                    </a>
+                    <div class="flex items-center gap-1.5">
+                      <a
+                        href="${addrUrl}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="오류 없는 도로명 주소로 네이버 지도 열기"
+                        class="px-2.5 py-1.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 text-zinc-700 dark:text-zinc-200 text-[11px] font-bold transition"
+                      >
+                        📍 주소핀
+                      </a>
+                      <a
+                        href="${naverUrl}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-xs font-extrabold transition"
+                      >
+                        N 플레이스 ›
+                      </a>
+                    </div>
                   </div>
                 </div>
 
@@ -2108,7 +2251,7 @@
               class="custom-stop-name flex-1 px-3 py-1.5 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs sm:text-sm font-semibold focus:outline-none focus:border-mono-pink"
             />
             <a
-              href="https://map.naver.com/p/search/${encodeURIComponent(stop.name || '데이트 맛집')}"
+              href="${buildNaverSearchUrl(stop.name || '성수다락')}"
               target="_blank"
               rel="noopener noreferrer"
               class="px-2.5 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-[11px] font-bold shrink-0 hover:bg-emerald-500/20"
@@ -2145,10 +2288,13 @@
                 <h4 class="text-base font-extrabold text-zinc-900 dark:text-white">${c.title}</h4>
                 <div class="space-y-1.5 pt-1">
                   ${c.stops.map((s, i) => `
-                    <div class="text-xs text-zinc-700 dark:text-zinc-200 flex items-center gap-2">
-                      <span class="w-4 h-4 rounded-full bg-pink-100 dark:bg-zinc-700 text-mono-pink text-[10px] font-bold flex items-center justify-center">${i + 1}</span>
-                      <span class="font-bold text-mono-pink">${s.time}</span>
-                      <span class="font-semibold">${s.name}</span>
+                    <div class="text-xs text-zinc-700 dark:text-zinc-200 flex items-center justify-between gap-2">
+                      <div class="flex items-center gap-2 min-w-0">
+                        <span class="w-4 h-4 rounded-full bg-pink-100 dark:bg-zinc-700 text-mono-pink text-[10px] font-bold flex items-center justify-center shrink-0">${i + 1}</span>
+                        <span class="font-bold text-mono-pink shrink-0">${s.time}</span>
+                        <span class="font-semibold truncate">${s.name}</span>
+                      </div>
+                      <a href="${buildNaverSearchUrl(s.name)}" target="_blank" rel="noopener noreferrer" class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 shrink-0 hover:underline">N지도 ›</a>
                     </div>
                   `).join('')}
                 </div>
@@ -2175,7 +2321,7 @@
                   <div class="text-sm font-extrabold text-zinc-900 dark:text-white truncate">${s.title}</div>
                   <div class="text-xs text-zinc-500">${s.price} · ⭐ ${s.rating}</div>
                 </div>
-                <a href="https://map.naver.com/p/search/${encodeURIComponent(s.searchQuery)}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-xs font-bold shrink-0">지도 ›</a>
+                <a href="${buildNaverSearchUrl(s.title, s.searchQuery)}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-xs font-bold shrink-0">지도 ›</a>
               </div>
             `).join('');
           }
@@ -2520,9 +2666,10 @@
                   <div class="text-sm font-extrabold text-zinc-900 dark:text-white">${s.name}</div>
                 </div>
               </div>
-              <div class="flex gap-1.5">
-                <a href="https://map.naver.com/p/search/${encodeURIComponent(aiState.region + ' ' + s.name)}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-bold">네이버 지도</a>
-                <a href="https://map.kakao.com/?q=${encodeURIComponent(aiState.region + ' ' + s.name)}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 rounded-lg bg-amber-400 text-zinc-900 text-xs font-bold">카카오맵</a>
+              <div class="flex gap-1.5 shrink-0">
+                <a href="${buildNaverAddressUrl(s.address, s.searchQuery)}" target="_blank" rel="noopener noreferrer" class="px-2 py-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-100 text-[11px] font-bold" title="도로명 주소로 열기">📍 주소핀</a>
+                <a href="${buildNaverSearchUrl(s.name, s.searchQuery)}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-bold">네이버 지도</a>
+                <a href="https://map.kakao.com/?q=${encodeURIComponent(cleanPlaceQuery(s.searchQuery || s.name))}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 rounded-lg bg-amber-400 text-zinc-900 text-xs font-bold">카카오맵</a>
               </div>
             </div>
           `).join('');
@@ -2738,9 +2885,38 @@
         });
       }
 
-      // ==================== 관리자 전용 애널리틱스 & 실시간 로그 시스템 ====================
-      let adminPin = '1234';
+      // ==================== 관리자 전용 애널리틱스 & 백엔드 인증 시스템 (Owner Only) ====================
+      const savedBackendCfg = (() => {
+        try { return JSON.parse(localStorage.getItem('monodate_backend_cfg_v1') || '{}'); } catch (e) { return {}; }
+      })();
+      let adminId = savedBackendCfg.adminId || 'admin';
+      let adminPin = savedBackendCfg.adminPin || '1234';
+      let adminWebhookUrl = savedBackendCfg.webhookUrl || '';
       let isAdminAuthenticated = false;
+
+      function syncAdminOwnerUiVisibility() {
+        const headerAdminBtn = document.getElementById('headerAdminBtn');
+        const headerApiBtn = document.getElementById('headerApiGuideBtn');
+        const menuAdminBtn = document.getElementById('menuAdminBtn');
+        const menuApiBtn = document.getElementById('menuApiGuideBtn');
+        const loginBtn = document.getElementById('loginModalBtn');
+
+        [headerAdminBtn, headerApiBtn, menuAdminBtn, menuApiBtn].forEach(el => {
+          if (!el) return;
+          if (isAdminAuthenticated) {
+            el.classList.remove('hidden');
+            if (el === headerAdminBtn || el === headerApiBtn) el.classList.add('inline-flex');
+          } else {
+            el.classList.add('hidden');
+            el.classList.remove('inline-flex');
+          }
+        });
+
+        if (loginBtn && isAdminAuthenticated) {
+          loginBtn.textContent = `👑 관리자(${adminId})`;
+          loginBtn.classList.add('text-mono-pink', 'font-extrabold');
+        }
+      }
 
       const adminStats = {
         liveViewers: 19,
@@ -2934,34 +3110,138 @@
         document.getElementById('footerAdminBtn').addEventListener('click', openAdminEntry);
         document.getElementById('closeAdminAuthModalBtn').addEventListener('click', closeAdminAuthModal);
 
+        const idModalInput = document.getElementById('adminIdModalInput');
+        const cfgIdInput = document.getElementById('adminConfigIdInput');
+        const cfgPwInput = document.getElementById('adminConfigPwInput');
+        const cfgWebhookInput = document.getElementById('adminConfigWebhookInput');
+
+        function populateAdminConfigInputs() {
+          if (cfgIdInput) cfgIdInput.value = adminId;
+          if (cfgPwInput) cfgPwInput.value = adminPin;
+          if (cfgWebhookInput) cfgWebhookInput.value = adminWebhookUrl;
+          const idHint = document.getElementById('loginAdminIdHint');
+          const pwHint = document.getElementById('loginAdminPwHint');
+          const pinHint = document.getElementById('adminPinHintCode');
+          if (idHint) idHint.textContent = adminId;
+          if (pwHint) pwHint.textContent = adminPin;
+          if (pinHint) pinHint.textContent = adminPin;
+        }
+        populateAdminConfigInputs();
+        syncAdminOwnerUiVisibility();
+
+        function grantAdminAccess() {
+          isAdminAuthenticated = true;
+          syncAdminOwnerUiVisibility();
+          populateAdminConfigInputs();
+          renderAdminDashboard();
+          switchView('admin');
+          showToast(`👑 관리자(${adminId}) 인증 완료! 나만 볼 수 있는 백엔드 콘솔이 열렸습니다.`);
+        }
+
+        // 1) 상단 [로그인] 모달 내 아이디/비밀번호 로그인 처리 (관리자 ID 입력 시 백엔드 콘솔 오픈!)
+        const idLoginForm = document.getElementById('idLoginForm');
+        if (idLoginForm) {
+          idLoginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const enteredId = (document.getElementById('loginIdInput').value || '').trim();
+            const enteredPw = (document.getElementById('loginPwInput').value || '').trim();
+            if (!enteredId) {
+              showToast('아이디를 입력해주세요. (운영자 기본 ID: ' + adminId + ')');
+              return;
+            }
+            if (enteredId === adminId) {
+              if (enteredPw === adminPin) {
+                document.getElementById('closeLoginModalBtn').click();
+                grantAdminAccess();
+              } else {
+                showToast('❌ 관리자 비밀번호가 일치하지 않습니다. (초기값: ' + adminPin + ')');
+              }
+            } else {
+              // 일반 회원 아이디 로그인 처리 (관리자 메뉴 노출 안 됨)
+              document.getElementById('closeLoginModalBtn').click();
+              document.getElementById('loginModalBtn').textContent = `${enteredId}님`;
+              recordAdminActivity(`일반 회원 아이디 로그인 (${enteredId})`, true);
+              showToast(`💕 반가워요, ${enteredId}님! 내 데이트 보관함이 동기화되었습니다.`);
+            }
+          });
+        }
+
+        // 2) 시크릿 관리자 인증 모달 (#adminAuthModal) 제출 처리
         document.getElementById('adminAuthForm').addEventListener('submit', (e) => {
           e.preventDefault();
-          const entered = (pinInput.value || '').trim();
-          if (entered === adminPin) {
-            isAdminAuthenticated = true;
+          const enteredId = idModalInput ? (idModalInput.value || '').trim() : adminId;
+          const enteredPw = (pinInput.value || '').trim();
+          if (enteredId === adminId && enteredPw === adminPin) {
             closeAdminAuthModal();
-            renderAdminDashboard();
-            switchView('admin');
-            showToast('👑 관리자 전용 대시보드에 접속했습니다.');
+            grantAdminAccess();
           } else {
-            showToast('❌ 비밀번호가 일치하지 않습니다. (초기값: ' + adminPin + ')');
+            showToast(`❌ 관리자 아이디(${adminId}) 또는 비밀번호(${adminPin})를 확인해주세요.`);
           }
         });
 
-        // 관리자 로그아웃 / 잠금
+        // 3) 관리자 로그아웃 / 잠금 (즉시 헤더·사이드바에서 관리자 & API 버튼 완전 숨김)
         document.getElementById('adminLogoutBtn').addEventListener('click', () => {
           isAdminAuthenticated = false;
+          syncAdminOwnerUiVisibility();
+          document.getElementById('loginModalBtn').textContent = '로그인';
+          document.getElementById('loginModalBtn').classList.remove('text-mono-pink', 'font-extrabold');
           switchView('home');
-          showToast('🔒 관리자 페이지가 다시 잠금 처리되었습니다.');
+          showToast('🔒 관리자 모드가 종료되어 일반 방문자 화면으로 숨김 처리되었습니다.');
         });
 
-        // 비밀번호 변경
+        // 4) 관리자 백엔드 설정 저장 (나만의 관리자 ID / PW / DB 주소 영구 저장)
+        const saveCfgBtn = document.getElementById('saveAdminBackendConfigBtn');
+        if (saveCfgBtn) {
+          saveCfgBtn.addEventListener('click', () => {
+            const newId = (cfgIdInput.value || '').trim() || 'admin';
+            const newPw = (cfgPwInput.value || '').trim() || '1234';
+            const newWebhook = (cfgWebhookInput.value || '').trim();
+            adminId = newId;
+            adminPin = newPw;
+            adminWebhookUrl = newWebhook;
+            try {
+              localStorage.setItem('monodate_backend_cfg_v1', JSON.stringify({
+                adminId,
+                adminPin,
+                webhookUrl: adminWebhookUrl
+              }));
+            } catch (err) {}
+            populateAdminConfigInputs();
+            syncAdminOwnerUiVisibility();
+            showToast(`💾 관리자 계정이 [ID: ${adminId} / PW: ${adminPin}](으)로 백엔드에 저장되었습니다!`);
+          });
+        }
+
+        // 관리자 상단 버튼에서도 설정 섹션으로 스크롤
         document.getElementById('adminChangePinBtn').addEventListener('click', () => {
-          adminPin = adminPin === '1234' ? '0000' : '1234';
-          const hint = document.getElementById('adminPinHintCode');
-          if (hint) hint.textContent = adminPin;
-          showToast(`🔑 관리자 비밀번호가 [${adminPin}](으)로 변경되었습니다.`);
+          if (cfgIdInput) {
+            cfgIdInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            cfgIdInput.focus();
+          }
+          showToast('🔐 하단 백엔드 설정에서 나만의 관리자 아이디와 비밀번호를 변경하세요!');
         });
+
+        const openApiDirectBtn = document.getElementById('adminOpenApiModalDirectBtn');
+        if (openApiDirectBtn) {
+          openApiDirectBtn.addEventListener('click', () => {
+            const m = document.getElementById('apiGuideModal');
+            if (m) {
+              m.classList.remove('hidden');
+              m.classList.add('flex');
+            }
+          });
+        }
+
+        // 5) 운영자 전용 시크릿 단축키 (Ctrl + Shift + A) 및 URL 해시 (#admin) 감지
+        window.addEventListener('keydown', (e) => {
+          if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+            e.preventDefault();
+            openAdminEntry();
+          }
+        });
+        if (window.location.hash === '#admin') {
+          openAdminEntry();
+        }
 
         // 가상 실시간 방문/가입 시뮬레이션 테스트 버튼
         const sampleRegions = ['서울 마포구', '서울 강남구', '서울 송파구', '부산 수영구', '경기 분당구'];
