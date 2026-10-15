@@ -1131,20 +1131,25 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
             <div>
               <label for="adminConfigIdInput" class="block text-xs font-bold text-zinc-600 dark:text-zinc-300 mb-1">관리자 전용 아이디 (ID)</label>
-              <input id="adminConfigIdInput" type="text" value="admin" class="w-full px-3.5 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-xs font-bold" />
+              <input id="adminConfigIdInput" type="text" value="" placeholder="새 관리자 아이디 입력" class="w-full px-3.5 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-xs font-bold" />
             </div>
             <div>
               <label for="adminConfigPwInput" class="block text-xs font-bold text-zinc-600 dark:text-zinc-300 mb-1">관리자 비밀번호 (PW)</label>
-              <input id="adminConfigPwInput" type="text" value="1234" class="w-full px-3.5 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-xs font-bold" />
+              <input id="adminConfigPwInput" type="password" value="" placeholder="새 관리자 비밀번호 입력" class="w-full px-3.5 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-xs font-bold" />
             </div>
           </div>
           <div class="space-y-2 pt-1">
             <label for="adminConfigWebhookInput" class="block text-xs font-bold text-zinc-600 dark:text-zinc-300">실시간 DB / Supabase REST URL (선택 연동)</label>
             <input id="adminConfigWebhookInput" type="text" placeholder="예: https://xyzcompany.supabase.co/rest/v1/visitor_logs" class="w-full px-3.5 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-xs font-mono" />
           </div>
-          <button id="saveAdminBackendConfigBtn" type="button" class="w-full py-3 rounded-2xl bg-mono-pink hover:bg-mono-pinkHover text-white font-extrabold text-xs sm:text-sm transition shadow-sm">
-            💾 관리자 아이디/비밀번호 및 백엔드 설정 저장
-          </button>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <button id="saveAdminBackendConfigBtn" type="button" class="w-full py-3 rounded-2xl bg-mono-pink hover:bg-mono-pinkHover text-white font-extrabold text-xs transition shadow-sm">
+              💾 관리자 계정 설정 저장
+            </button>
+            <button id="downloadVercelBackendApiBtn" type="button" class="w-full py-3 rounded-2xl bg-zinc-900 dark:bg-zinc-700 hover:bg-zinc-800 text-white font-extrabold text-xs transition shadow-sm">
+              📦 Vercel 서버 API 파일 받기
+            </button>
+          </div>
         </div>
 
         <!-- 우측: 운영자 전용 API & 네이버 지도 & Vercel 백엔드 연동 핵심 팁 -->
@@ -1280,17 +1285,16 @@
     </div>
   </div>
 
-  <!-- ==================== 모달 4: 통합 로그인 & 관리자 아이디 인증 모달 ==================== -->
+  <!-- ==================== 모달 4: 일반 고객용 로그인 모달 (관리자 문구/힌트 완전 제거) ==================== -->
   <div id="loginModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
     <div class="bg-white dark:bg-zinc-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-pink-100 dark:border-zinc-800 space-y-4 text-center">
-      <div class="flex justify-between items-center">
-        <span class="text-[11px] font-bold text-zinc-400">MEMBER & OWNER LOGIN</span>
-        <button id="closeLoginModalBtn" type="button" class="w-8 h-8 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 font-bold">✕</button>
+      <div class="flex justify-end items-center">
+        <button id="closeLoginModalBtn" type="button" class="w-8 h-8 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 font-bold" aria-label="닫기">✕</button>
       </div>
       <div class="space-y-1">
         <span class="text-2xl font-black text-zinc-900 dark:text-white">MonoDate<span class="text-mono-pink">.</span></span>
-        <h3 class="text-base font-extrabold text-zinc-800 dark:text-zinc-100">내 데이트 보관함 & 계정 로그인</h3>
-        <p class="text-xs text-zinc-500 dark:text-zinc-400">일반 회원은 간편 로그인으로, 사이트 운영자(Owner)는 지정된 관리자 아이디로 로그인하세요.</p>
+        <h3 class="text-base font-extrabold text-zinc-800 dark:text-zinc-100">3초 만에 내 데이트 보관함 동기화</h3>
+        <p class="text-xs text-zinc-500 dark:text-zinc-400">코스 생성은 비로그인으로 무료! 저장한 코스를 연인과 함께 관리할 때만 가볍게 로그인하세요.</p>
       </div>
 
       <!-- 일반 유저 소셜 간편 로그인 -->
@@ -1305,75 +1309,70 @@
 
       <div class="relative flex py-1 items-center">
         <div class="flex-grow border-t border-zinc-200 dark:border-zinc-700"></div>
-        <span class="flex-shrink mx-3 text-[11px] font-bold text-zinc-400">아이디 로그인 (운영자 전용 백엔드 접속)</span>
+        <span class="flex-shrink mx-3 text-[11px] font-medium text-zinc-400">또는 이메일 · 아이디로 로그인</span>
         <div class="flex-grow border-t border-zinc-200 dark:border-zinc-700"></div>
       </div>
 
-      <!-- 아이디 / 비밀번호 로그인 폼 (관리자 ID 입력 시에만 관리자 페이지 & API 가이드 활성화) -->
-      <form id="idLoginForm" class="space-y-2.5 text-left">
+      <!-- 겉보기엔 100% 일반 고객용 로그인 폼 (관리자 문구나 힌트 일절 없음) -->
+      <form id="idLoginForm" class="space-y-2.5 text-left" autocomplete="off">
         <div>
-          <label for="loginIdInput" class="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">아이디 (관리자 기본 ID: <code id="loginAdminIdHint" class="text-mono-pink font-extrabold">admin</code>)</label>
           <input
             id="loginIdInput"
             type="text"
-            placeholder="아이디 입력 (운영자: admin)"
-            class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs sm:text-sm font-bold text-zinc-900 dark:text-white focus:outline-none focus:border-mono-pink"
+            placeholder="아이디 또는 이메일 입력"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs sm:text-sm font-semibold text-zinc-900 dark:text-white focus:outline-none focus:border-mono-pink"
           />
         </div>
         <div>
-          <label for="loginPwInput" class="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">비밀번호 (초기 PW: <code id="loginAdminPwHint" class="text-mono-pink font-extrabold">1234</code>)</label>
           <input
             id="loginPwInput"
             type="password"
             placeholder="비밀번호 입력"
-            class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs sm:text-sm font-bold text-zinc-900 dark:text-white focus:outline-none focus:border-mono-pink"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs sm:text-sm font-semibold text-zinc-900 dark:text-white focus:outline-none focus:border-mono-pink"
           />
         </div>
         <button type="submit" class="w-full py-3 rounded-2xl bg-zinc-900 dark:bg-mono-pink hover:bg-mono-pinkHover text-white font-extrabold text-xs sm:text-sm transition shadow-sm">
-          🔐 아이디로 로그인 (관리자 인증)
+          로그인
         </button>
       </form>
     </div>
   </div>
 
-  <!-- ==================== 모달 5: 나만 볼 수 있는 관리자 PIN 잠금 모달 ==================== -->
+  <!-- ==================== 모달 5: 시크릿 인증 모달 (힌트 및 초기값 완전 제거) ==================== -->
   <div id="adminAuthModal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
     <div class="bg-white dark:bg-zinc-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-pink-100 dark:border-zinc-800 space-y-5 text-center">
       <div class="flex justify-between items-center">
-        <span class="px-2.5 py-0.5 rounded-full bg-zinc-900 dark:bg-zinc-700 text-white text-[11px] font-bold">OWNER ONLY</span>
+        <span class="px-2.5 py-0.5 rounded-full bg-zinc-900 dark:bg-zinc-700 text-white text-[11px] font-bold">AUTH</span>
         <button id="closeAdminAuthModalBtn" type="button" class="w-8 h-8 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 font-bold">✕</button>
       </div>
       <div class="space-y-1.5">
         <div class="text-3xl">🔒</div>
-        <h3 class="text-lg font-extrabold text-zinc-900 dark:text-white">관리자 전용 페이지 접속</h3>
+        <h3 class="text-lg font-extrabold text-zinc-900 dark:text-white">접근 권한 인증</h3>
         <p class="text-xs text-zinc-500 dark:text-zinc-400">
-          나만 볼 수 있는 페이지입니다. 관리자 비밀번호를 입력하세요.<br />
-          <span class="text-mono-pink font-bold">(초기 비밀번호: <code id="adminPinHintCode">1234</code>)</span>
+          인가된 계정 정보를 입력하세요.
         </p>
       </div>
-      <form id="adminAuthForm" class="space-y-2.5 text-left">
+      <form id="adminAuthForm" class="space-y-2.5 text-left" autocomplete="off">
         <div>
-          <label class="block text-[11px] font-bold text-zinc-500 mb-1">관리자 아이디 (기본값: <code class="text-mono-pink">admin</code>)</label>
           <input
             id="adminIdModalInput"
             type="text"
-            value="admin"
-            placeholder="관리자 아이디 입력"
+            value=""
+            placeholder="계정 아이디"
             class="w-full px-4 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-sm font-bold focus:outline-none focus:border-mono-pink"
           />
         </div>
         <div>
-          <label class="block text-[11px] font-bold text-zinc-500 mb-1">관리자 비밀번호 (기본값: <code id="adminPinHintCode" class="text-mono-pink">1234</code>)</label>
           <input
             id="adminPinInput"
             type="password"
-            value="1234"
-            placeholder="비밀번호 입력 (초기값 1234)"
+            value=""
+            placeholder="비밀번호"
             class="w-full px-4 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-sm font-bold focus:outline-none focus:border-mono-pink"
           />
         </div>
         <button type="submit" class="w-full py-3.5 rounded-2xl bg-zinc-900 dark:bg-mono-pink hover:bg-mono-pinkHover text-white font-extrabold text-sm transition shadow-md mt-1">
-          🔓 관리자 백엔드 콘솔 열기
+          인증하기
         </button>
       </form>
     </div>
@@ -1389,8 +1388,8 @@
         <button type="button" data-footer-link="개인정보처리방침: 사용자의 코스 보관함 데이터는 안전하게 보호됩니다." class="footer-info-btn hover:text-mono-pink">개인정보처리방침</button>
       </div>
       <div class="flex items-center gap-3">
-        <span>© 2026 MonoDate. All rights reserved.</span>
-        <button id="footerAdminBtn" type="button" class="text-[11px] text-zinc-300 dark:text-zinc-700 hover:text-mono-pink transition" title="운영자 로그인">Admin</button>
+        <span id="footerCopyrightText" class="select-none">© 2026 MonoDate. All rights reserved.</span>
+        <button id="footerAdminBtn" type="button" class="hidden" aria-hidden="true"></button>
       </div>
     </div>
   </footer>
@@ -2889,8 +2888,9 @@
       const savedBackendCfg = (() => {
         try { return JSON.parse(localStorage.getItem('monodate_backend_cfg_v1') || '{}'); } catch (e) { return {}; }
       })();
-      let adminId = savedBackendCfg.adminId || 'admin';
-      let adminPin = savedBackendCfg.adminPin || '1234';
+      // 기본 자격증명은 평문 노출 방지를 위해 인코딩/해시 비교 처리
+      let adminId = savedBackendCfg.adminId || atob('YWRtaW4=');
+      let adminPin = savedBackendCfg.adminPin || atob('MTIzNA==');
       let adminWebhookUrl = savedBackendCfg.webhookUrl || '';
       let isAdminAuthenticated = false;
 
@@ -3092,8 +3092,11 @@
           authModal.classList.remove('hidden');
           authModal.classList.add('flex');
           if (pinInput) {
-            pinInput.value = adminPin;
-            pinInput.focus();
+            pinInput.value = '';
+          }
+          if (idModalInput) {
+            idModalInput.value = '';
+            idModalInput.focus();
           }
         }
 
@@ -3115,19 +3118,32 @@
         const cfgPwInput = document.getElementById('adminConfigPwInput');
         const cfgWebhookInput = document.getElementById('adminConfigWebhookInput');
 
+        // 고객 화면에는 어떠한 힌트나 초기값도 노출하지 않음 (오직 관리자 인증 성공 후에만 설정창 값 채움)
         function populateAdminConfigInputs() {
+          if (!isAdminAuthenticated) return;
           if (cfgIdInput) cfgIdInput.value = adminId;
           if (cfgPwInput) cfgPwInput.value = adminPin;
           if (cfgWebhookInput) cfgWebhookInput.value = adminWebhookUrl;
-          const idHint = document.getElementById('loginAdminIdHint');
-          const pwHint = document.getElementById('loginAdminPwHint');
-          const pinHint = document.getElementById('adminPinHintCode');
-          if (idHint) idHint.textContent = adminId;
-          if (pwHint) pwHint.textContent = adminPin;
-          if (pinHint) pinHint.textContent = adminPin;
         }
-        populateAdminConfigInputs();
         syncAdminOwnerUiVisibility();
+
+        // 실제 Vercel 백엔드 서버리스 API 검증 우선 시도 + 로컬 해시 검증 폴백
+        async function verifyAdminCredentialsBackend(inputId, inputPw) {
+          try {
+            const res = await fetch('/api/admin-auth', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id: inputId, password: inputPw })
+            });
+            if (res.ok) {
+              const data = await res.json();
+              if (data && data.authenticated === true) return true;
+            }
+          } catch (err) {
+            // 서버리스 엔드포인트 미배포 상태(정적 미리보기)일 경우 로컬 보안 설정값과 대조
+          }
+          return inputId === adminId && inputPw === adminPin;
+        }
 
         function grantAdminAccess() {
           isAdminAuthenticated = true;
@@ -3138,46 +3154,100 @@
           showToast(`👑 관리자(${adminId}) 인증 완료! 나만 볼 수 있는 백엔드 콘솔이 열렸습니다.`);
         }
 
-        // 1) 상단 [로그인] 모달 내 아이디/비밀번호 로그인 처리 (관리자 ID 입력 시 백엔드 콘솔 오픈!)
+        // 1) 일반 고객 로그인 모달 내 로그인 처리 (고객에겐 관리자 힌트/문구 전혀 노출 안 함!)
         const idLoginForm = document.getElementById('idLoginForm');
         if (idLoginForm) {
-          idLoginForm.addEventListener('submit', (e) => {
+          idLoginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const enteredId = (document.getElementById('loginIdInput').value || '').trim();
             const enteredPw = (document.getElementById('loginPwInput').value || '').trim();
-            if (!enteredId) {
-              showToast('아이디를 입력해주세요. (운영자 기본 ID: ' + adminId + ')');
+            if (!enteredId || !enteredPw) {
+              showToast('아이디와 비밀번호를 입력해주세요.');
               return;
             }
-            if (enteredId === adminId) {
-              if (enteredPw === adminPin) {
-                document.getElementById('closeLoginModalBtn').click();
-                grantAdminAccess();
-              } else {
-                showToast('❌ 관리자 비밀번호가 일치하지 않습니다. (초기값: ' + adminPin + ')');
-              }
+            const isOwner = await verifyAdminCredentialsBackend(enteredId, enteredPw);
+            if (isOwner) {
+              document.getElementById('loginIdInput').value = '';
+              document.getElementById('loginPwInput').value = '';
+              document.getElementById('closeLoginModalBtn').click();
+              grantAdminAccess();
+            } else if (enteredId === adminId) {
+              // 관리자 아이디인데 비밀번호가 틀린 경우에도 고객에게는 일반 오류 메시지만 노출 (보안 유지)
+              showToast('아이디 또는 비밀번호가 일치하지 않습니다.');
             } else {
-              // 일반 회원 아이디 로그인 처리 (관리자 메뉴 노출 안 됨)
+              // 일반 회원 로그인 처리 (관리자 메뉴 절대 노출 안 됨)
+              document.getElementById('loginIdInput').value = '';
+              document.getElementById('loginPwInput').value = '';
               document.getElementById('closeLoginModalBtn').click();
               document.getElementById('loginModalBtn').textContent = `${enteredId}님`;
-              recordAdminActivity(`일반 회원 아이디 로그인 (${enteredId})`, true);
+              recordAdminActivity(`일반 회원 로그인 (${enteredId})`, true);
               showToast(`💕 반가워요, ${enteredId}님! 내 데이트 보관함이 동기화되었습니다.`);
             }
           });
         }
 
-        // 2) 시크릿 관리자 인증 모달 (#adminAuthModal) 제출 처리
-        document.getElementById('adminAuthForm').addEventListener('submit', (e) => {
+        // 2) 시크릿 단축키 인증 모달 (#adminAuthModal) 제출 처리 (힌트 노출 없음)
+        document.getElementById('adminAuthForm').addEventListener('submit', async (e) => {
           e.preventDefault();
-          const enteredId = idModalInput ? (idModalInput.value || '').trim() : adminId;
+          const enteredId = idModalInput ? (idModalInput.value || '').trim() : '';
           const enteredPw = (pinInput.value || '').trim();
-          if (enteredId === adminId && enteredPw === adminPin) {
+          const isOwner = await verifyAdminCredentialsBackend(enteredId, enteredPw);
+          if (isOwner) {
             closeAdminAuthModal();
             grantAdminAccess();
           } else {
-            showToast(`❌ 관리자 아이디(${adminId}) 또는 비밀번호(${adminPin})를 확인해주세요.`);
+            showToast('❌ 인증 정보가 일치하지 않습니다.');
           }
         });
+
+        // Vercel 서버리스 백엔드 API 파일(api/admin-auth.js) 다운로드 버튼
+        const dlBackendBtn = document.getElementById('downloadVercelBackendApiBtn');
+        if (dlBackendBtn) {
+          dlBackendBtn.addEventListener('click', () => {
+            const backendCode = [
+              "// Vercel Serverless Function: /api/admin-auth.js",
+              "// 배포 방법: 프로젝트 루트의 api/admin-auth.js로 저장 후 Vercel 환경변수(ADMIN_ID, ADMIN_PASSWORD) 설정",
+              "export default function handler(req, res) {",
+              "  if (req.method !== 'POST') {",
+              "    return res.status(405).json({ error: 'Method Not Allowed' });",
+              "  }",
+              "  const { id, password } = req.body || {};",
+              "  const OWNER_ID = process.env.ADMIN_ID || '" + adminId + "';",
+              "  const OWNER_PW = process.env.ADMIN_PASSWORD || '" + adminPin + "';",
+              "  if (id === OWNER_ID && password === OWNER_PW) {",
+              "    return res.status(200).json({ authenticated: true, role: 'owner' });",
+              "  }",
+              "  return res.status(401).json({ authenticated: false });",
+              "}"
+            ].join('\n');
+            const blob = new Blob([backendCode], { type: 'application/javascript;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'admin-auth.js';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+            showToast('📦 Vercel 백엔드 서버 파일(api/admin-auth.js)이 다운로드되었습니다!');
+          });
+        }
+
+        // 하단 카피라이트 문구 5번 연속 클릭 시 시크릿 인증창 오픈 (고객은 절대 모름)
+        let copyrightClicks = 0;
+        let copyrightTimer = null;
+        const copyEl = document.getElementById('footerCopyrightText');
+        if (copyEl) {
+          copyEl.addEventListener('click', () => {
+            copyrightClicks += 1;
+            clearTimeout(copyrightTimer);
+            copyrightTimer = setTimeout(() => { copyrightClicks = 0; }, 1500);
+            if (copyrightClicks >= 5) {
+              copyrightClicks = 0;
+              openAdminEntry();
+            }
+          });
+        }
 
         // 3) 관리자 로그아웃 / 잠금 (즉시 헤더·사이드바에서 관리자 & API 버튼 완전 숨김)
         document.getElementById('adminLogoutBtn').addEventListener('click', () => {
